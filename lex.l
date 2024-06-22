@@ -2,9 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "parser.tab.h"
 
 %}
 
+%option noyywrap
 %option yylineno
 
 /* Regular expression definitions */
@@ -19,10 +21,6 @@ id {w}({w}|{d})*
 %%
 "=" {
   printf("\n{%2d} <assign, %s, %s>",yylineno, "ASSIGN", yytext);
-  printf("%s", yytext);
-}
-"read" {
-  printf("\n{%2d} <input, %s, %s>",yylineno, "READ", yytext);
   printf("%s", yytext);
 }
 "print" {
@@ -114,7 +112,6 @@ id {w}({w}|{d})*
   printf("%s", yytext);
 }
 
-
 {number} { 
   printf("\n{%2d} <number, %s, %s>",yylineno, "NUMBER", yytext);
   printf("%s", yytext);
@@ -135,6 +132,7 @@ id {w}({w}|{d})*
 
 
 int main() {
+  yyparse();
   yylex();
   return 0;
 }
