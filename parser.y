@@ -6,6 +6,7 @@
   extern int yylex();
   extern int yyparse();
   extern void yyerror(const char *);
+  void execute_command(double value);
 %}
 
 %union { 
@@ -18,6 +19,7 @@
 %token <num> NUMBER
 
 %token ASSIGN
+%token ENDL
 
 %token PRINT
 
@@ -52,36 +54,35 @@
 %nonassoc UMINUS
 
 %type <num> exp
-%type <num> stmt
 %type <num> logic
+%type <num> command
+%type <num> statement
 
 %%
+
 program:
-  stmt_list
+  /* vazio */
+  | program statement ENDL { execute_command($2); }
+  | program ENDL { /* linha em branco */ }
+  ;
+
+statement:
+  command
   | exp
   ;
 
-stmt_list:
-  stmt_list stmt
-  | stmt
+command:
+  PRINT exp { printf("%f\n", $2); }
+  | ID ASSIGN exp { /* lógica de atribuição */ }
   ;
 
-stmt:
-  assign
-  | PRINT exp  { printf("Print: %f\n", $2); }
-  ;
-
-assign:
-  ID ASSIGN exp  { printf("Assigned: %f\n", $3); }
-  ;
-
-exp: 
-    OPENP exp CLOSEP      { $$ = $2; }
-  | exp SUM exp           { $$ = $1 + $3; }
-  | exp SUB exp           { $$ = $1 - $3; }
-  | exp MULT exp          { $$ = $1 * $3; }
-  | exp DIV exp           { $$ = $1 / $3; }
+exp:
+  exp SUM exp          { $$ = $1 + $3; printf("\n%f\n", $$); }
+  | exp SUB exp             { $$ = $1 - $3; printf("\n%f\n", $$);}
+  | exp MULT exp            { $$ = $1 * $3; }
+  | exp DIV exp             { $$ = $1 / $3; }
   | SUB exp %prec UMINUS  { $$ = -$2; }
+  | OPENP exp CLOSEP      { $$ = $2; }
   | NUMBER                { $$ = $1; }
   ;
 
@@ -99,6 +100,12 @@ logic:
   ;
 
 %%
+
+void execute_command(double value) {
+    // Aqui você decide o que fazer com o valor recebido
+    // Pode ser armazenar em variáveis, imprimir na tela, etc.
+    printf("\n%f\n", value);
+}
 
 void yyerror(const char *s) {
   fprintf(stderr, "Error: %s\n", s);

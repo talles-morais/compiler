@@ -135,6 +135,12 @@ id {w}({w}|{d})*
   return SEMIC;
 }
 
+\n {
+  printf("\n{%2d} <ENDL, %s, %s>",yylineno, "ENDL", yytext);
+  printf("%s", yytext);
+  return ENDL;
+}
+
 {number} {
   yylval.num = atof(yytext); 
   printf("\n{%2d} <number, %s, %s>",yylineno, "NUMBER", yytext);
@@ -143,7 +149,7 @@ id {w}({w}|{d})*
 }
 
 {string} { 
-  
+  yylval.str = strdup(yytext); 
   printf("\n{%2d} <string, %s, %s>",yylineno, "STRING", yytext);
   printf("%s", yytext);
   return STRING;
@@ -156,7 +162,8 @@ id {w}({w}|{d})*
 }
 
 [ \t]+ { }
-. { }
+.|\n		{ return yytext[0]; }
+
 %%
 
 int main() {
