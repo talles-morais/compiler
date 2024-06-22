@@ -8,10 +8,14 @@
   extern void yyerror(const char *);
 %}
 
+%union { 
+  double num;
+  char *str;
+}
 
 %token ID
-%token STRING
-%token NUMBER
+%token <str> STRING
+%token <num> NUMBER
 
 %token ASSIGN
 
@@ -47,46 +51,55 @@
 %left MULT DIV
 %nonassoc UMINUS
 
-%type exp
-%type assign
-%type logic
+%type <num> exp
+%type <num> stmt
+%type <num> logic
 
 %%
-assign:
-  ID ASSIGN exp
+program:
+  stmt_list
+  | exp
   ;
 
-exp:
-  ID
-  | NUMBER
-  | STRING
-  | OPENP exp CLOSEP
-  | exp SUM exp
-  | exp SUB exp
-  | exp MULT exp
-  | exp DIV exp
-  | SUB exp %prec UMINUS
+stmt_list:
+  stmt_list stmt
+  | stmt
+  ;
+
+stmt:
+  assign
+  | PRINT exp  { printf("Print: %f\n", $2); }
+  ;
+
+assign:
+  ID ASSIGN exp  { printf("Assigned: %f\n", $3); }
+  ;
+
+exp: 
+    OPENP exp CLOSEP      { $$ = $2; }
+  | exp SUM exp           { $$ = $1 + $3; }
+  | exp SUB exp           { $$ = $1 - $3; }
+  | exp MULT exp          { $$ = $1 * $3; }
+  | exp DIV exp           { $$ = $1 / $3; }
+  | SUB exp %prec UMINUS  { $$ = -$2; }
+  | NUMBER                { $$ = $1; }
   ;
 
 logic:
-  exp
-  | logic EQ logic
-  | logic NEQ logic
-  | logic GRT logic
-  | logic GRTEQ logic
-  | logic LESS logic
-  | logic LESSEQ logic
-  | logic AND logic
-  | logic OR logic
-  | NOT logic
+    exp                   { $$ = $1; }
+  | logic EQ logic        { $$ = $1 == $3; }
+  | logic NEQ logic       { $$ = $1 != $3; }
+  | logic GRT logic       { $$ = $1 > $3; }
+  | logic GRTEQ logic     { $$ = $1 >= $3; }
+  | logic LESS logic      { $$ = $1 < $3; }
+  | logic LESSEQ logic    { $$ = $1 <= $3; }
+  | logic AND logic       { $$ = $1 && $3; }
+  | logic OR logic        { $$ = $1 || $3; }
+  | NOT logic             { $$ = !$2; }
   ;
-
 
 %%
 
 void yyerror(const char *s) {
-  extern int yylineno;
-  extern char *yytext;
-
-  printf("Error on line %2d, in %s", yytext);
+  fprintf(stderr, "Error: %s\n", s);
 }
