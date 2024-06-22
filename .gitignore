@@ -1,6 +1,7 @@
+*
+!*/
+!*.*
+test.txt
 lex.yy.c
 parser.tab.c
 parser.tab.h
-makefile
-saida
-test.txt
