@@ -67,8 +67,8 @@
 
 program:
   /* vazio */
-  | program statement SEMIC ENDL { execute_command($2); }
-  | program SEMIC ENDL { /* linha em branco */ }
+  | program statement ENDL {  }
+  | program ENDL { /* linha em branco */ }
   ;
 
 statement:
@@ -82,8 +82,8 @@ command:
   ;
 
 exp:
-  exp SUM exp          { $$ = $1 + $3; printf("\n%f\n", $$); }
-  | exp SUB exp             { $$ = $1 - $3; printf("\n%f\n", $$);}
+  exp SUM exp          { $$ = $1 + $3; }
+  | exp SUB exp             { $$ = $1 - $3;}
   | exp MULT exp            { $$ = $1 * $3; }
   | exp DIV exp             { $$ = $1 / $3; }
   | SUB exp %prec UMINUS  { $$ = -$2; }
