@@ -1,7 +1,6 @@
 %{
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <iostream>
+#include <string>
 #include "parser.tab.h"
 
 %}
@@ -135,7 +134,7 @@ id {w}({w}|{d})*
   return SEMIC;
 }
 
-\n {
+"\r\n"|"\n" {
   printf("\n{%2d} <ENDL, %s, %s>",yylineno, "ENDL", yytext);
   printf("%s", yytext);
   return ENDL;
@@ -162,7 +161,7 @@ id {w}({w}|{d})*
 }
 
 [ \t]+ { }
-.|\n		{ return yytext[0]; }
+.	{ return yytext[0]; }
 
 %%
 

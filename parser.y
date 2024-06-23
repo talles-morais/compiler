@@ -1,12 +1,17 @@
 %{
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <string.h>
+  #include <iostream>
+  #include <string>
+  #include <unordered_map>
+
+  using std::string;
+  using std::unordered_map;
 
   extern int yylex();
   extern int yyparse();
   extern void yyerror(const char *);
   void execute_command(double value);
+
+  unordered_map<string, double> variables;
 %}
 
 %union { 
@@ -14,7 +19,7 @@
   char *str;
 }
 
-%token ID
+%token <str> ID
 %token <str> STRING
 %token <num> NUMBER
 
@@ -62,8 +67,8 @@
 
 program:
   /* vazio */
-  | program statement ENDL { execute_command($2); }
-  | program ENDL { /* linha em branco */ }
+  | program statement SEMIC ENDL { execute_command($2); }
+  | program SEMIC ENDL { /* linha em branco */ }
   ;
 
 statement:
@@ -73,7 +78,7 @@ statement:
 
 command:
   PRINT exp { printf("%f\n", $2); }
-  | ID ASSIGN exp { /* lógica de atribuição */ }
+  | ID ASSIGN exp { variables[$1] = $3; }
   ;
 
 exp:
@@ -84,6 +89,7 @@ exp:
   | SUB exp %prec UMINUS  { $$ = -$2; }
   | OPENP exp CLOSEP      { $$ = $2; }
   | NUMBER                { $$ = $1; }
+  | ID                { $$ = variables[$1]; }
   ;
 
 logic:
