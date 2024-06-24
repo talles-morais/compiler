@@ -1,7 +1,11 @@
 *
 !*/
 !*.*
+!makefile
 test.txt
 lex.yy.c
 parser.tab.c
 parser.tab.h
+main.cpp
+main.txt
+a.out
