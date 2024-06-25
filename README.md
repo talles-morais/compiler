@@ -6,28 +6,17 @@ Instale as dependências necessárias
 sudo apt-get update
 sudo apt-get install flex
 sudo apt-get install bison
+sudo apt-get install make
 ```
 
-Processe o analisador léxico
+Escreva seu arquivo .pit com nossa linguagem e utilize o seguinte comando:
 
 ```bash
-flex lex.l
+make all file=exemplo.pit
 ```
 
-Processe o analisador sintático
+A saída será salva em um arquivo a.out, se quiser vê-la novamente:
 
 ```bash
-bison -d parser.y
-```
-
-Compile com o compilador C
-
-```bash
-gcc lex.yy.c parser.tab.c -o <NomeDoArquivo> -lfl
-```
-
-Inicie o programa executável
-
-```bash
-./<NomeDoArquivo>
+./a.out
 ```
