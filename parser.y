@@ -38,6 +38,9 @@
 %token ELSE
 %token ELIF
 
+%token FOR
+%token WHILE
+
 %token EQ
 %token NEQ
 %token GRT
@@ -82,6 +85,7 @@ statement:
   command
   | exp
   | cond
+  | for_loop
   ;
 
 command:
@@ -122,9 +126,17 @@ exp:
 
 cond:
   IF OPENP exp CLOSEP BGN statement END 
-  | IF OPENP exp CLOSEP BGN statement END ELSE BGN statement END 
+  | IF OPENP exp CLOSEP BGN statement END else_part 
   ;
-  
+
+else_part:
+  ELSE BGN statement END
+  | ELIF OPENP exp CLOSEP BGN statement END else_part
+  ;
+
+for_loop:
+  FOR OPENP ID ASSIGN exp SEMIC exp SEMIC command CLOSEP BGN statement END
+  ;
 
 %%
 

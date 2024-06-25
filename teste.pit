@@ -1,0 +1,18 @@
+number a = 12;
+number b = 6;
+
+if (a == 10) begin
+  print "nada";
+end elif (a > 10) begin
+  print "a is greater than 10\n";
+end else begin
+  print "a is less than 10\n";
+end
+
+if (b => 5) begin
+  print "b is less than or equal to 5\n";
+end elif (b < 10) begin
+  print "b is less than 10\n";
+end else begin
+  print "b is greater than or equal to 10\n";
+end

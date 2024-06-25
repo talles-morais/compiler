@@ -160,6 +160,18 @@ id {w}({w}|{d})*
   fprintf(cpp, "string ", yytext);
   return TYPE_STR;
 }
+
+"for" { 
+  fprintf(saida, "\n{%2d} <FOR, %s, %s>",yylineno, "FOR", yytext);
+  fprintf(cpp, "for", yytext);
+  return TYPE_STR;
+}
+"while" { 
+  fprintf(saida, "\n{%2d} <WHILE, %s, %s>",yylineno, "WHILE", yytext);
+  fprintf(cpp, "while", yytext);
+  return TYPE_STR;
+}
+
 {number} {
   fprintf(saida, "\n{%2d} <NUMBER, %s, %s>",yylineno, "NUMBER", yytext);
   fprintf(cpp, "%s", yytext);
