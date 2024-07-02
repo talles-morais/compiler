@@ -175,20 +175,17 @@ id {w}({w}|{d})*
 {number} {
   fprintf(saida, "\n{%2d} <NUMBER, %s, %s>",yylineno, "NUMBER", yytext);
   fprintf(cpp, "%s", yytext);
-  yylval.num = atof(yytext);
   return NUMBER;
 }
 
 {string} { 
   fprintf(saida, "\n{%2d} <STRING, %s, %s>",yylineno, "STRING", yytext);
   fprintf(cpp, "%s", yytext);
-  yylval.str = strdup(yytext);
   return STRING;
 }
 {id} {
   fprintf(saida, "\n{%2d} <id, %s, %s>",yylineno, "id", yytext);
   fprintf(cpp, "%s", yytext);
-  yylval.str = strdup(yytext);
   return ID;
 }
 

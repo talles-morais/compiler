@@ -2,7 +2,6 @@
   #include <iostream>
   #include <string>
   #include <unordered_map>
-  #define YYERROR_VERBOSE
 
   using std::string;
   using std::unordered_map;
@@ -11,20 +10,11 @@
   extern int yylex();
   extern int yyparse();
   extern void yyerror(const char *);
-
-  unordered_map<string, double> num_variables;
-  unordered_map<string, string> str_variables;
 %}
 
-%union { 
-  double num;
-  char *str;
-  int logic;
-}
-
-%token <str> ID
-%token <str> STRING
-%token <num> NUMBER
+%token ID
+%token STRING
+%token NUMBER
 
 %token ASSIGN
 %token TYPE_NB
@@ -68,10 +58,10 @@
 %nonassoc UMINUS
 %nonassoc EQ NEQ GRT GRTEQ LESS LESSEQ
 
-%type <num> exp
-%type <logic> program
-%type <logic> cond
-%type <logic> statement
+%type exp
+%type program
+%type cond
+%type statement
 
 %%
 

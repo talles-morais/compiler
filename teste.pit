@@ -11,7 +11,7 @@ if(numero1 > numero2) begin
   print numero2;
   print "\n";
   result = numero1 + numero2;
-end elif(numero1 < numero2) begin
+end elif(numero1 == numero2) begin
   print numero1;
   print igual;
   print numero2;
