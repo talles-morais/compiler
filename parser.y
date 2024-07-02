@@ -76,52 +76,45 @@
 %%
 
 program:
-  /* empty */
   | program statement 
-  | program  /* blank line */
+  | program  
   ;
 
 statement:
   command
   | exp
   | cond
-  | for_loop
+  | loop
   ;
 
 command:
   cond
   | PRINT exp SEMIC
   | PRINT STRING SEMIC
-  | ID ASSIGN exp { num_variables[$1] = $3; } SEMIC
-  | ID ASSIGN STRING { str_variables[$1] = $3; } SEMIC
-  | TYPE_NB ID ASSIGN exp { num_variables[$2] = $4; } SEMIC
-  | TYPE_STR ID ASSIGN STRING { str_variables[$2] = $4; } SEMIC
+  | ID ASSIGN exp SEMIC
+  | ID ASSIGN STRING SEMIC
+  | TYPE_NB ID ASSIGN exp SEMIC
+  | TYPE_STR ID ASSIGN STRING SEMIC
   ;
 
 exp:
-  exp SUM exp          { $$ = $1 + $3; }
-  | exp SUB exp             { $$ = $1 - $3;}
-  | exp MULT exp            { $$ = $1 * $3; }
-  | exp DIV exp             { $$ = $1 / $3; }
-  | SUB exp %prec UMINUS  { $$ = -$2; }
-  | OPENP exp CLOSEP      { $$ = $2; }
-  | exp EQ exp        { $$ = $1 == $3; }
-  | exp NEQ exp       { $$ = $1 != $3; }
-  | exp GRT exp       { $$ = $1 > $3; }
-  | exp GRTEQ exp     { $$ = $1 >= $3; }
-  | exp LESS exp      { $$ = $1 < $3; }
-  | exp LESSEQ exp    { $$ = $1 <= $3; }
-  | exp AND exp       { $$ = $1 && $3; }
-  | exp OR exp        { $$ = $1 || $3; }
-  | NOT exp             { $$ = !$2; }
-  | NUMBER                { $$ = $1; }
-  | ID                 {
-    if (num_variables.find($1) != num_variables.end()) {
-      $$ = num_variables[$1];
-    } else {
-      cout << "Undefined variable: " << $1 << "\n";
-    }
-    }
+  | exp SUM exp        
+  | exp SUB exp           
+  | exp MULT exp          
+  | exp DIV exp           
+  | SUB exp %prec UMINUS
+  | OPENP exp CLOSEP    
+  | exp EQ exp      
+  | exp NEQ exp     
+  | exp GRT exp     
+  | exp GRTEQ exp   
+  | exp LESS exp     
+  | exp LESSEQ exp  
+  | exp AND exp     
+  | exp OR exp      
+  | NOT exp           
+  | NUMBER              
+  | ID
   ;
 
 cond:
@@ -134,9 +127,11 @@ else_part:
   | ELIF OPENP exp CLOSEP BGN statement END else_part
   ;
 
-for_loop:
-  FOR OPENP ID ASSIGN exp SEMIC exp SEMIC command CLOSEP BGN statement END
-  ;
+
+loop:
+    WHILE OPENP exp CLOSEP BGN program END 
+    | FOR OPENP ID ASSIGN exp SEMIC exp SEMIC ID ASSIGN exp CLOSEP BGN program END 
+    ;
 
 %%
 

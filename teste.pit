@@ -1,18 +1,13 @@
-number a = 12;
-number b = 6;
+number a = 0;
 
-if (a == 10) begin
-  print "nada";
-end elif (a > 10) begin
-  print "a is greater than 10\n";
-end else begin
-  print "a is less than 10\n";
+while(a<10) begin
+ print a;
+ print "\n";
+ a = a + 1;
 end
 
-if (b => 5) begin
-  print "b is less than or equal to 5\n";
-end elif (b < 10) begin
-  print "b is less than 10\n";
-end else begin
-  print "b is greater than or equal to 10\n";
+number i = 0;
+for(i = 0; i =< 15;i = i + 1) begin
+  print i;
+  print " ";
 end

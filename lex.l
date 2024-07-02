@@ -151,25 +151,25 @@ id {w}({w}|{d})*
 
 "number" {
   fprintf(saida, "\n{%2d} <NUMBER, %s, %s>",yylineno, "NUMBER", yytext);
-  fprintf(cpp, "double ", yytext);
+  fprintf(cpp, "double ");
   return TYPE_NB;
 }
 
 "string" { 
   fprintf(saida, "\n{%2d} <STRING, %s, %s>",yylineno, "STRING", yytext);
-  fprintf(cpp, "string ", yytext);
+  fprintf(cpp, "string ");
   return TYPE_STR;
 }
 
 "for" { 
   fprintf(saida, "\n{%2d} <FOR, %s, %s>",yylineno, "FOR", yytext);
-  fprintf(cpp, "for", yytext);
-  return TYPE_STR;
+  fprintf(cpp, "for");
+  return FOR;
 }
 "while" { 
   fprintf(saida, "\n{%2d} <WHILE, %s, %s>",yylineno, "WHILE", yytext);
-  fprintf(cpp, "while", yytext);
-  return TYPE_STR;
+  fprintf(cpp, "while");
+  return WHILE;
 }
 
 {number} {
