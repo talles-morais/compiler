@@ -118,13 +118,13 @@ exp:
   ;
 
 cond:
-  IF OPENP exp CLOSEP BGN statement END 
-  | IF OPENP exp CLOSEP BGN statement END else_part 
+  IF OPENP exp CLOSEP BGN program END 
+  | IF OPENP exp CLOSEP BGN program END else_part 
   ;
 
 else_part:
-  ELSE BGN statement END
-  | ELIF OPENP exp CLOSEP BGN statement END else_part
+  ELSE BGN program END
+  | ELIF OPENP exp CLOSEP BGN program END else_part
   ;
 
 
